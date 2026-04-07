@@ -1,0 +1,9 @@
+work/*
+!work/.gitkeep
+
+.DS_Store
+.Rproj
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
