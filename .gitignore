@@ -1,9 +1,13 @@
+# work directory
 work/*
 !work/.gitkeep
 
-.DS_Store
+# R
 .Rproj
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+
+# macOS
+.DS_Store
