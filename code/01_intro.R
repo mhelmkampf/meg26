@@ -1,12 +1,12 @@
 ### ======================================================================== ###
 ### Exercises in Marine Ecological Genetics 2026                             ###
-### 01. Introduction                                                         ###
+### 01. Introduction and setup                                               ###
 ### ======================================================================== ###
 
 
 ### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< bash >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-### Establish SSH connection to cluster using your course account (please adjust)
+### Establish SSH connection to cluster using your course account (please adjust user name)
 ssh user1234@rosa.hpc.uni-oldenburg.de
 
 
@@ -22,30 +22,31 @@ module load RStudio-Server
 rstudio-start-on-rosa.sh
 
 
-### Copy the SSH command provided at 1) and execute in new terminal tab / window
+### Copy the SSH command provided at 1) and execute in new terminal tab or window
 #> ssh -N -L 8000: ...
 #> re-enter your password, and note nothing will change in the terminal on success
 
 
-### Go to http://localhost:8000 in a browser window
+### Go to http://localhost:8000 in your browser
+#> RStudio will lanuch automatidcally
 
 
 
 ### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< R >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 ### ============================================================================
-### Exercise 1: Manual test for HWE
+### Exercise 1: Manual test for Hardy-Weinberg equilibrium
 
 
 ### What are the observed genotype frequencies?
 
-# Assign value to variable
+# Assign value to variable (here, size of the population)
 N <- 12
 
 # Recall variable
 N
 
-# Arithmetic calculation
+# Calculate the observed frequency of the AA genotype
 AA_obscount <- 6
 AA_obsfreq <- AA_obscount / N
 AA_obsfreq
@@ -70,10 +71,11 @@ AA_expfreq <- p ^ 2
 # AB_expfreq <- 
 # BB_expfreq <- 
 
-# Enter data into a table ("tibble") and add expected genotype counts
+# Load tidyverse package required for next step
 library(tidyverse)
 
-dat <- tibble(
+# Enter data into a table ("tibble") and add expected genotype counts
+genotype_data <- tibble(
   genotype = c("AA", "AB", "BB"),
   observed_count = c(AA_obscount, AB_obscount, BB_obscount),
   expected_freq = c(AA_expfreq, AB_expfreq, BB_expfreq),
@@ -82,7 +84,7 @@ dat <- tibble(
 
 # Perform Pearson's chi-squared test of goodness of fit
 chi_sq <- sum(
-  (dat$observed_count - dat$expected_count)^2 / dat$expected_count
+  (genotype_data$observed_count - genotype_data$expected_count)^2 / genotype_data$expected_count
   )
 
 p_value <- 1 - pchisq(chi_sq, df = 1)
@@ -100,6 +102,7 @@ p_value
 # Fis = (He - Ho) / He
         # He: expected heterozygosity
         # Ho: observed heterozygosity
+# Fis > 0: heterozygote deficiency, Fis < 0 heterozygote excess
 
 (Fis <- (AB_expfreq - AB_obsfreq) / AB_expfreq)
 
@@ -128,7 +131,7 @@ BB_expfreq <- q ^ 2
 # How would you interpret the results of the test?
 # - With a p-value of 0.02, the null hypothesis of Hardy–Weinberg equilibrium can be rejected
 # - The fixation index of Fis = 0.66 indicates a strong deficiency of heterozygotes
-# - Reasons could be e.g. genetic drift, inbreeding, or selection against heterozygotes
+# - Reasons could be e.g. inbreeding, selection against heterozygotes, or population structure
 
 
 
