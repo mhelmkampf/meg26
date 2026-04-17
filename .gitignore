@@ -11,3 +11,7 @@ work/*
 
 # macOS
 .DS_Store
+
+# Genepop
+cmdline.txt
+fichier.in

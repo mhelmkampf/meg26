@@ -1,6 +1,6 @@
 ### ======================================================================== ###
 ### Exercises in Marine Ecological Genetics 2026                             ###
-### 02. Hardy-Weinberg equilibrium                                           ###
+### 01. Introduction and setup                                               ###
 ### ======================================================================== ###
 
 
@@ -10,8 +10,13 @@
 ssh user1234@rosa.hpc.uni-oldenburg.de
 
 
-### Download course materials to course account using Git
+### Either: Download course materials to course account using Git (if this is the first time)
 git clone https://github.com/mhelmkampf/meg26.git
+
+
+### Or: Update git repository (if it already exists)
+cd meg25
+git pull
 
 
 ### Load RStudio module
@@ -109,7 +114,93 @@ p_value
 
 
 ### ============================================================================
-### Solutions
+### Exercise 2: Using the Genepop format to test for HWE
+
+
+### Install and load required R packages
+install.packages("adegenet")
+install.packages("pegas")
+library(adegenet)
+library(pegas)
+
+
+### Read in data from Genepop format file
+help(read.genepop)
+starfish <- read.genepop("data/msats/starfish.gen", ncode = 1)
+
+
+### Compare with input text file on GitHub
+
+
+### Access data in the new genind object
+starfish
+starfish@tab
+starfish@loc.n.all
+
+
+### Quick test for HWE (pegas package)
+hw.test(starfish)
+
+
+
+### ============================================================================
+### Exercise 3: Real-world microsatellite data of Caribbean reef fish populations
+
+
+### Review Genepop text file on GitHub / text editor
+
+
+### Read in data from Genepop format file
+barbados <- read.genepop("data/msats/puella_barbados.gen", ncode = 3)
+barbados
+
+
+### What is the most / least diverse locus in terms of number of alleles?
+# Hint: Use the @loc.n.all slot of the genind object
+#
+
+
+### Locus summary using poppr (no. alleles, Simpson's index, heterozygosity, evenness)
+install.packages("poppr")
+install.packages("genepop")
+library(poppr)
+library(genepop)
+
+locus_table(barbados)
+
+# Note: Simpson's index and Evenness measures allelic diversity by considering both
+# the number of alleles and their relative abundances, with values ranging from 0 to 1
+# E.g. Simpson's index: probability that two randomly selected alleles are different
+
+
+### Is this population in HWE? What does this tell us?
+
+
+### More detailed test function for HWE, with results over all alleles (genepop package)
+test_HW("data/msats/puella_barbados.gen", outputFile = "work/HW_barbados.txt")
+
+# Note: The exact HWE test compares the observed genotype distribution to all possible distributions 
+# with the same allele counts, and uses Markov chain sampling to estimate how often equally or more 
+# extreme configurations occur under equilibrium.
+# How many genotype configurations are as unlikely or more unlikely than the observed one?
+
+
+### Compare these results to the Cayo de Media Luna population
+test_HW("data/msats/puella_medialuna.gen", outputFile = "work/HW_medialuna.txt")
+
+
+### Test all Caribbean populations. What patterns can you identify regarding loci and populations?
+# Use data file: data/msats/puella_caribbean.gen
+# test_HW()
+
+
+### What patterns can you identify regarding individual loci and populations,
+# and what could be the underlying reasons?
+
+
+
+### ============================================================================
+### Solutions — Exercise 1
 
 # Calculate the frequency of the remaining genotypes
 BB_obscount <- 4
@@ -132,6 +223,25 @@ BB_expfreq <- q ^ 2
 # - With a p-value of 0.02, the null hypothesis of Hardy–Weinberg equilibrium can be rejected
 # - The fixation index of Fis = 0.66 indicates a strong deficiency of heterozygotes
 # - Reasons could be e.g. inbreeding, selection against heterozygotes, or population structure
+
+
+
+### ============================================================================
+### Solutions — Exercise 3
+
+### What is the most / least diverse locus in terms of number of alleles?
+barbados@loc.n.all   # most diverse: pam013 (29 alleles), least diverse: hyp015 / e2 (6 alleles)
+
+
+### Test all Caribbean populations. What patterns can you identify regarding loci and populations?
+test_HW("data/msats/puella_caribbean.gen", outputFile = "work/HW_caribbean.txt")
+
+
+### What patterns can you identify regarding individual loci and populations?
+# - Some loci show significant deviations from HWE in multiple populations, 
+# which could indicate selection or technical issues with the locus (e.g. genotyping errors)
+# - Some populations show significant deviations from HWE across multiple loci,
+# which could indicate population structure, inbreeding, or demographic history
 
 
 
