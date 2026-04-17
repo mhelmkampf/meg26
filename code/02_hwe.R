@@ -15,7 +15,7 @@ git clone https://github.com/mhelmkampf/meg26.git
 
 
 ### Or: Update git repository (if it already exists)
-cd meg25
+cd meg26
 git pull
 
 
