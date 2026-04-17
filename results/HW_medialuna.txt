@@ -1,0 +1,47 @@
+Genepop 4.8.5: Hardy-Weinberg test
+
+File: data/msats/puella_medialuna.gen (Microsatellite genotypes of Hypoplectrus puella from Cayo de Media Luna)
+
+Number of populations detected:    1
+Number of loci detected:           10
+
+
+Estimation of exact P-Values by the Markov chain method. 
+---------------------------------------------
+Markov chain parameters for all tests:
+Dememorization:              10000
+Batches:                     20
+Iterations per batch:        5000
+Hardy Weinberg: Probability test
+        ************************
+
+
+
+==========================================
+     Results by population
+==========================================
+
+
+Pop : cayos de media luna ind#269 
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.4363  0.0959   0.0485  0.0428    921 switches (low!)
+gag010      0.9817  0.0125   0.0318  0.0052   2043 switches
+h24         0.3391  0.0554   0.0162 -0.0087   1997 switches
+hyp001      0.6453  0.0133   0.0040  0.0277  26772 switches
+hyp015      0.9631  0.0047   0.0499  0.0080   5935 switches
+hyp018      0.0866  0.0088   0.0142 -0.0104  13053 switches
+e2          0.0209  0.0038   0.0573  0.0619   7046 switches
+hyp008      0.0161  0.0102   0.0767  0.0264    918 switches (low!)
+hyp016      0.7603  0.0626  -0.0464 -0.0254   1027 switches
+pam013      0.6152  0.0583  -0.0065 -0.0092   1530 switches
+
+All (Fisher's method):
+ Chi2 :    27.2269
+ Df   :    20
+ Prob :    0.129000
+
+Normal ending

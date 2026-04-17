@@ -1,0 +1,47 @@
+Genepop 4.8.5: Hardy-Weinberg test
+
+File: data/msats/puella_barbados.gen (Microsatellite genotypes of Hypoplectrus puella from Barbados)
+
+Number of populations detected:    1
+Number of loci detected:           10
+
+
+Estimation of exact P-Values by the Markov chain method. 
+---------------------------------------------
+Markov chain parameters for all tests:
+Dememorization:              10000
+Batches:                     20
+Iterations per batch:        5000
+Hardy Weinberg: Probability test
+        ************************
+
+
+
+==========================================
+     Results by population
+==========================================
+
+
+Pop : barbados ind#784 
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.7756  0.0505  -0.0603 -0.0295   1628 switches
+gag010      0.6220  0.0556   0.0368  0.0112   3089 switches
+h24         0.8550  0.0338   0.0007  0.0004   2310 switches
+hyp001      0.6716  0.0128   0.0458  0.0191  21467 switches
+hyp015      0.8566  0.0099  -0.0401 -0.0217  10186 switches
+hyp018      0.3019  0.0196  -0.0112 -0.0115   8367 switches
+e2          0.4889  0.0176  -0.0483  0.0493  17606 switches
+hyp008      0.9023  0.0116   0.0134  0.0072   6215 switches
+hyp016      0.8865  0.0313  -0.0300 -0.0179   1627 switches
+pam013      0.9158  0.0386  -0.0047  0.0032    917 switches (low!)
+
+All (Fisher's method):
+ Chi2 :    7.3259
+ Df   :    20
+ Prob :    0.995471
+
+Normal ending

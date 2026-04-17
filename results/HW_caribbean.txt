@@ -1,0 +1,636 @@
+Genepop 4.8.5: Hardy-Weinberg test
+
+File: data/msats/puella_caribbean.gen (Microsatellite genotypes of Hypoplectrus puella from 15 Caribbean populations)
+
+Number of populations detected:    15
+Number of loci detected:           10
+
+
+Estimation of exact P-Values by the Markov chain method. 
+---------------------------------------------
+Markov chain parameters for all tests:
+Dememorization:              10000
+Batches:                     20
+Iterations per batch:        5000
+Hardy Weinberg: Probability test
+        ************************
+
+
+==========================================
+     Results by locus
+==========================================
+
+
+Locus "g2"
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+POP         P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+carrie bow  0.7446  0.0597  -0.0550 -0.0167   1606 switches
+utila       0.4614  0.0770  -0.0116  0.0041   1281 switches
+guanaja     0.4220  0.0562  -0.0398 -0.0185   2236 switches
+cayos bece  0.8087  0.0372  -0.0444 -0.0286   2474 switches
+cayos de m  0.4133  0.0645   0.0485  0.0428    958 switches (low!)
+bocas del   0.9182  0.0345  -0.0577 -0.0228   1463 switches
+el porveni  0.4098  0.0767   0.0137 -0.0129   1424 switches
+cayos hola  0.7665  0.0412   0.0237 -0.0110   1862 switches
+islas puya  0.7504  0.0716   0.0011 -0.0036   1024 switches
+cayos rato  0.4121  0.0649   0.0490  0.0084   1879 switches
+cayos ingl  0.4112  0.0681  -0.0255 -0.0113   1533 switches
+achutupu    0.3581  0.0700  -0.0005 -0.0193   1394 switches
+isla dupak  0.6125  0.0707  -0.0059 -0.0077   1378 switches
+goedup      0.4232  0.0713  -0.0563 -0.0156   1311 switches
+barbados    0.7751  0.0503  -0.0603 -0.0295   1753 switches
+
+All (Fisher's method):
+ Chi2:    17.9290
+ Df   :    30
+ Prob :    0.959671
+
+Locus "gag010"
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+POP         P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+carrie bow  0.4893  0.0722  -0.0031 -0.0154   1486 switches
+utila       0.9281  0.0194   0.0009  0.0123   2075 switches
+guanaja     0.9662  0.0159   0.0126 -0.0102   1172 switches
+cayos bece  0.2778  0.0704   0.0369  0.0220   1355 switches
+cayos de m  0.9842  0.0134   0.0318  0.0052   2045 switches
+bocas del   0.8715  0.0344   0.0225  0.0255   1491 switches
+el porveni  0.1129  0.0288   0.0351  0.0278   1547 switches
+cayos hola  0.0757  0.0256  -0.0633 -0.0364   3911 switches
+islas puya  0.9567  0.0152  -0.0429 -0.0319   2533 switches
+cayos rato  0.0498  0.0189   0.0047 -0.0057   1791 switches
+cayos ingl  0.5031  0.0454  -0.0175 -0.0171   1730 switches
+achutupu    0.0490  0.0177   0.1005  0.0574   1643 switches
+isla dupak  0.0453  0.0349  -0.0345 -0.0139   1583 switches
+goedup      0.0033  0.0028   0.0142  0.0153   1261 switches
+barbados    0.6125  0.0483   0.0368  0.0112   3087 switches
+
+All (Fisher's method):
+ Chi2:    46.1033
+ Df   :    30
+ Prob :    0.030376
+
+Locus "h24"
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+POP         P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+carrie bow  0.3450  0.0654  -0.0009 -0.0090   2219 switches
+utila       0.9650  0.0151  -0.0035 -0.0047   2057 switches
+guanaja     0.0278  0.0215  -0.0039  0.0417   2394 switches
+cayos bece  0.8455  0.0373  -0.0407 -0.0268   2624 switches
+cayos de m  0.3772  0.0760   0.0162 -0.0087   2045 switches
+bocas del   0.7298  0.0472   0.0248  0.0256   1835 switches
+el porveni  0.1881  0.0564  -0.0181  0.0066   1622 switches
+cayos hola  0.4071  0.0805   0.0344  0.0354   1789 switches
+islas puya  0.6891  0.0441   0.0545  0.0318   2826 switches
+cayos rato  0.0234  0.0120   0.1209  0.0422   2818 switches
+cayos ingl  0.2292  0.0496   0.0242 -0.0056   1787 switches
+achutupu    0.1788  0.0442   0.0005 -0.0071   2430 switches
+isla dupak  0.8666  0.0257  -0.0841 -0.0421   2291 switches
+goedup      0.7802  0.0395  -0.0516 -0.0097   1922 switches
+barbados    0.8329  0.0342   0.0007  0.0004   2314 switches
+
+All (Fisher's method):
+ Chi2:    33.2131
+ Df   :    30
+ Prob :    0.313370
+
+Locus "hyp001"
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+POP         P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+carrie bow  0.4649  0.0202   0.1005  0.0952  15374 switches
+utila       0.3878  0.0106   0.0102 -0.0191  22724 switches
+guanaja     0.7750  0.0140  -0.0829 -0.0481   7682 switches
+cayos bece  0.1283  0.0170   0.0957  0.0965  16331 switches
+cayos de m  0.6522  0.0123   0.0040  0.0277  27121 switches
+bocas del   0.6254  0.0195   0.0033 -0.0130  14316 switches
+el porveni  0.1217  0.0083  -0.1178 -0.0720  30051 switches
+cayos hola  0.2763  0.0191  -0.0558 -0.0315  15363 switches
+islas puya  0.0667  0.0104  -0.0980 -0.0545  24291 switches
+cayos rato  0.0784  0.0076   0.0288  0.0157  33887 switches
+cayos ingl  0.5632  0.0182  -0.0433 -0.0283  18040 switches
+achutupu    0.4484  0.0128   0.0054 -0.0202  19346 switches
+isla dupak  0.6520  0.0177   0.0532  0.0290  14738 switches
+goedup      0.1282  0.0104  -0.0629 -0.0381  24622 switches
+barbados    0.6729  0.0126   0.0458  0.0191  21495 switches
+
+All (Fisher's method):
+ Chi2:    35.6361
+ Df   :    30
+ Prob :    0.220232
+
+Locus "hyp015"
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+POP         P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+carrie bow  0.3779  0.0106   0.1566  0.0335  14591 switches
+utila       0.3415  0.0357  -0.0271 -0.0142   2756 switches
+guanaja     0.5187  0.0403  -0.1206 -0.0383   3490 switches
+cayos bece  0.8318  0.0081  -0.1038 -0.0445  10432 switches
+cayos de m  0.9810  0.0032   0.0499  0.0080   6006 switches
+bocas del   0.4184  0.0126   0.1736  0.0444  13238 switches
+el porveni  0.6252  0.0140   0.0333  0.0656  12873 switches
+cayos hola  0.5183  0.0231   0.1183  0.0136   4243 switches
+islas puya  0.8190  0.0292   0.0717  0.0093   2988 switches
+cayos rato  0.8837  0.0067   0.0282 -0.0075   6893 switches
+cayos ingl  0.7935  0.0202  -0.0759 -0.0366   6290 switches
+achutupu    0.7513  0.0150  -0.0287 -0.0220   7753 switches
+isla dupak  0.2343  0.0084   0.0763  0.0242  11501 switches
+goedup      0.1178  0.0081   0.2151  0.1707  14544 switches
+barbados    0.8407  0.0098  -0.0401 -0.0217   9986 switches
+
+All (Fisher's method):
+ Chi2:    19.0193
+ Df   :    30
+ Prob :    0.939604
+
+Locus "hyp018"
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+POP         P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+carrie bow  0.2767  0.0158  -0.1607 -0.0682  12355 switches
+utila       0.4443  0.0158   0.1540  0.0631  12001 switches
+guanaja     0.5667  0.0116   0.0316 -0.0187  22887 switches
+cayos bece  0.7835  0.0088  -0.0719 -0.0321  14814 switches
+cayos de m  0.0865  0.0083   0.0142 -0.0104  13092 switches
+bocas del   0.2448  0.0058  -0.0239  0.0223  10151 switches
+el porveni  0.8658  0.0057   0.0304  0.0287  10408 switches
+cayos hola  0.5458  0.0089  -0.0484 -0.0224  37981 switches
+islas puya  0.9598  0.0047   0.0505  0.0025   6822 switches
+cayos rato  0.7688  0.0070  -0.1140 -0.0662  31897 switches
+cayos ingl  0.9652  0.0012  -0.0213 -0.0209  39465 switches
+achutupu    0.0208  0.0031   0.0567  0.0100  16320 switches
+isla dupak  0.4361  0.0170   0.0377  0.0683  18612 switches
+goedup      0.5738  0.0101  -0.1641 -0.0871  18213 switches
+barbados    0.3032  0.0221  -0.0112 -0.0115   8303 switches
+
+All (Fisher's method):
+ Chi2:    28.6015
+ Df   :    30
+ Prob :    0.538593
+
+Locus "e2"
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+POP         P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+carrie bow  0.0384  0.0054  -0.0527  0.0270   6838 switches
+utila       0.3930  0.0302  -0.0947 -0.0376   7018 switches
+guanaja     0.0235  0.0050   0.0370 -0.0261   7274 switches
+cayos bece  0.9631  0.0117  -0.0752 -0.0211   2580 switches
+cayos de m  0.0273  0.0087   0.0573  0.0619   7006 switches
+bocas del   0.3409  0.0172   0.0998  0.0605  12106 switches
+el porveni  1.0000  0.0000  -0.1030 -0.0319   5445 switches
+cayos hola  0.5241  0.0240   0.0027  0.0943  14580 switches
+islas puya  0.9452  0.0094   0.0064  0.0022   6978 switches
+cayos rato  0.8094  0.0112  -0.0216 -0.0083   8666 switches
+cayos ingl  0.6945  0.0313  -0.0635 -0.0271   2112 switches
+achutupu    0.1978  0.0314   0.1469  0.1245   4447 switches
+isla dupak  0.9826  0.0073  -0.1086 -0.0378   3333 switches
+goedup      0.3899  0.0205   0.0723  0.0104  11476 switches
+barbados    0.4656  0.0135  -0.0483  0.0493  17735 switches
+
+All (Fisher's method):
+ Chi2:    34.5604
+ Df   :    30
+ Prob :    0.258986
+
+Locus "hyp008"
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+POP         P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+carrie bow  0.5078  0.0437  -0.0764 -0.0344   1763 switches
+utila       0.3954  0.0532  -0.0364  0.0056   1630 switches
+guanaja     0.5174  0.0819  -0.0325 -0.0139   1075 switches
+cayos bece  0.9927  0.0040  -0.0145 -0.0149   2066 switches
+cayos de m  0.0000  0.0000   0.0767  0.0264    915 switches (low!)
+bocas del   0.5967  0.0650   0.0360  0.0176   1647 switches
+el porveni  0.0163  0.0121   0.1289  0.0713   1487 switches
+cayos hola  0.9080  0.0357  -0.0515 -0.0261    844 switches (low!)
+islas puya  0.0089  0.0067   0.0379  0.0318   1036 switches
+cayos rato  0.1318  0.0616   0.0522  0.0450    697 switches (low!)
+cayos ingl  0.0449  0.0290   0.0481  0.0311    878 switches (low!)
+achutupu    0.2466  0.0715   0.0782  0.0352   1053 switches
+isla dupak  0.0553  0.0196   0.0620  0.0259   1208 switches
+goedup      0.0162  0.0087   0.0994  0.0628   1491 switches
+barbados    0.8821  0.0187   0.0134  0.0072   6441 switches
+
+All (Fisher's method):
+ Chi2:     > 82.6739
+ Df   :    30
+ Prob :     < 8.09e-07
+
+Locus "hyp016"
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+POP         P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+carrie bow  0.9996  0.0004  -0.0256 -0.0203    972 switches (low!)
+utila       0.2303  0.0516  -0.0567 -0.0278   1088 switches
+guanaja     0.4521  0.0865  -0.0031  0.0164   1017 switches
+cayos bece  0.4494  0.0783   0.0202  0.0050    838 switches (low!)
+cayos de m  0.8530  0.0415  -0.0464 -0.0254    884 switches (low!)
+bocas del   1.0000  0.0000  -0.0316 -0.0264   2805 switches
+el porveni  0.0275  0.0126   0.0353  0.0262   1285 switches
+cayos hola  0.1226  0.0375  -0.0277 -0.0142    972 switches (low!)
+islas puya  0.2087  0.0455   0.0182  0.0112   1464 switches
+cayos rato  0.0398  0.0258   0.0330  0.0577    798 switches (low!)
+cayos ingl  0.6349  0.0753  -0.0268 -0.0131    594 switches (low!)
+achutupu    0.3238  0.0820  -0.0338 -0.0216   1146 switches
+isla dupak  0.8061  0.0499  -0.0166 -0.0177   1338 switches
+goedup      0.1587  0.0442   0.0506  0.0484    953 switches (low!)
+barbados    0.9596  0.0176  -0.0300 -0.0179   1586 switches
+
+All (Fisher's method):
+ Chi2:    34.7657
+ Df   :    30
+ Prob :    0.251265
+
+Locus "pam013"
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+POP         P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+carrie bow  0.8758  0.0316   0.0095 -0.0078   1137 switches
+utila       0.1440  0.0547   0.0548  0.0202   1059 switches
+guanaja     0.6729  0.0675  -0.0370 -0.0098   1228 switches
+cayos bece  0.0332  0.0274   0.0999  0.0424   1437 switches
+cayos de m  0.7939  0.0350  -0.0065 -0.0092   1537 switches
+bocas del   0.4314  0.0635   0.0344  0.0085   1495 switches
+el porveni  0.5815  0.0701  -0.0142 -0.0095   1515 switches
+cayos hola  0.9494  0.0252  -0.0303 -0.0203   1550 switches
+islas puya  0.0665  0.0259  -0.0093  0.0071   1426 switches
+cayos rato  0.9208  0.0368   0.0198  0.0043   1427 switches
+cayos ingl  0.4011  0.0748   0.0057 -0.0090   1344 switches
+achutupu    0.3866  0.0638  -0.0068  0.0064    899 switches (low!)
+isla dupak  0.5605  0.0524  -0.0597 -0.0291   1063 switches
+goedup      0.6298  0.0724   0.0004  0.0008   1277 switches
+barbados    0.8658  0.0416  -0.0047  0.0032    950 switches (low!)
+
+All (Fisher's method):
+ Chi2:    26.7627
+ Df   :    30
+ Prob :    0.635702
+
+==========================================
+     Results by population
+==========================================
+
+
+Pop : carrie bow cay
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.7446  0.0597  -0.0550 -0.0167   1606 switches
+gag010      0.4893  0.0722  -0.0031 -0.0154   1486 switches
+h24         0.3450  0.0654  -0.0009 -0.0090   2219 switches
+hyp001      0.4649  0.0202   0.1005  0.0952  15374 switches
+hyp015      0.3779  0.0106   0.1566  0.0335  14591 switches
+hyp018      0.2767  0.0158  -0.1607 -0.0682  12355 switches
+e2          0.0384  0.0054  -0.0527  0.0270   6838 switches
+hyp008      0.5078  0.0437  -0.0764 -0.0344   1763 switches
+hyp016      0.9996  0.0004  -0.0256 -0.0203    972 switches (low!)
+pam013      0.8758  0.0316   0.0095 -0.0078   1137 switches
+
+All (Fisher's method):
+ Chi2 :    18.3353
+ Df   :    20
+ Prob :    0.565334
+
+Pop : utila
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.4614  0.0770  -0.0116  0.0041   1281 switches
+gag010      0.9281  0.0194   0.0009  0.0123   2075 switches
+h24         0.9650  0.0151  -0.0035 -0.0047   2057 switches
+hyp001      0.3878  0.0106   0.0102 -0.0191  22724 switches
+hyp015      0.3415  0.0357  -0.0271 -0.0142   2756 switches
+hyp018      0.4443  0.0158   0.1540  0.0631  12001 switches
+e2          0.3930  0.0302  -0.0947 -0.0376   7018 switches
+hyp008      0.3954  0.0532  -0.0364  0.0056   1630 switches
+hyp016      0.2303  0.0516  -0.0567 -0.0278   1088 switches
+pam013      0.1440  0.0547   0.0548  0.0202   1059 switches
+
+All (Fisher's method):
+ Chi2 :    17.9699
+ Df   :    20
+ Prob :    0.589391
+
+Pop : guanaja
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.4220  0.0562  -0.0398 -0.0185   2236 switches
+gag010      0.9662  0.0159   0.0126 -0.0102   1172 switches
+h24         0.0278  0.0215  -0.0039  0.0417   2394 switches
+hyp001      0.7750  0.0140  -0.0829 -0.0481   7682 switches
+hyp015      0.5187  0.0403  -0.1206 -0.0383   3490 switches
+hyp018      0.5667  0.0116   0.0316 -0.0187  22887 switches
+e2          0.0235  0.0050   0.0370 -0.0261   7274 switches
+hyp008      0.5174  0.0819  -0.0325 -0.0139   1075 switches
+hyp016      0.4521  0.0865  -0.0031  0.0164   1017 switches
+pam013      0.6729  0.0675  -0.0370 -0.0098   1228 switches
+
+All (Fisher's method):
+ Chi2 :    23.1174
+ Df   :    20
+ Prob :    0.283068
+
+Pop : cayos becerros
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.8087  0.0372  -0.0444 -0.0286   2474 switches
+gag010      0.2778  0.0704   0.0369  0.0220   1355 switches
+h24         0.8455  0.0373  -0.0407 -0.0268   2624 switches
+hyp001      0.1283  0.0170   0.0957  0.0965  16331 switches
+hyp015      0.8318  0.0081  -0.1038 -0.0445  10432 switches
+hyp018      0.7835  0.0088  -0.0719 -0.0321  14814 switches
+e2          0.9631  0.0117  -0.0752 -0.0211   2580 switches
+hyp008      0.9927  0.0040  -0.0145 -0.0149   2066 switches
+hyp016      0.4494  0.0783   0.0202  0.0050    838 switches (low!)
+pam013      0.0332  0.0274   0.0999  0.0424   1437 switches
+
+All (Fisher's method):
+ Chi2 :    16.7856
+ Df   :    20
+ Prob :    0.666851
+
+Pop : cayos de media luna
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.4133  0.0645   0.0485  0.0428    958 switches (low!)
+gag010      0.9842  0.0134   0.0318  0.0052   2045 switches
+h24         0.3772  0.0760   0.0162 -0.0087   2045 switches
+hyp001      0.6522  0.0123   0.0040  0.0277  27121 switches
+hyp015      0.9810  0.0032   0.0499  0.0080   6006 switches
+hyp018      0.0865  0.0083   0.0142 -0.0104  13092 switches
+e2          0.0273  0.0087   0.0573  0.0619   7006 switches
+hyp008      0.0000  0.0000   0.0767  0.0264    915 switches (low!)
+hyp016      0.8530  0.0415  -0.0464 -0.0254    884 switches (low!)
+pam013      0.7939  0.0350  -0.0065 -0.0092   1537 switches
+
+All (Fisher's method):
+ Chi2 :     > 40.5449
+ Df   :    20
+ Prob :     < 0.004260
+
+Pop : bocas del toro
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.9182  0.0345  -0.0577 -0.0228   1463 switches
+gag010      0.8715  0.0344   0.0225  0.0255   1491 switches
+h24         0.7298  0.0472   0.0248  0.0256   1835 switches
+hyp001      0.6254  0.0195   0.0033 -0.0130  14316 switches
+hyp015      0.4184  0.0126   0.1736  0.0444  13238 switches
+hyp018      0.2448  0.0058  -0.0239  0.0223  10151 switches
+e2          0.3409  0.0172   0.0998  0.0605  12106 switches
+hyp008      0.5967  0.0650   0.0360  0.0176   1647 switches
+hyp016      1.0000  0.0000  -0.0316 -0.0264   2805 switches
+pam013      0.4314  0.0635   0.0344  0.0085   1495 switches
+
+All (Fisher's method):
+ Chi2 :    11.4378
+ Df   :    20
+ Prob :    0.934071
+
+Pop : el porvenir
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.4098  0.0767   0.0137 -0.0129   1424 switches
+gag010      0.1129  0.0288   0.0351  0.0278   1547 switches
+h24         0.1881  0.0564  -0.0181  0.0066   1622 switches
+hyp001      0.1217  0.0083  -0.1178 -0.0720  30051 switches
+hyp015      0.6252  0.0140   0.0333  0.0656  12873 switches
+hyp018      0.8658  0.0057   0.0304  0.0287  10408 switches
+e2          1.0000  0.0000  -0.1030 -0.0319   5445 switches
+hyp008      0.0163  0.0121   0.1289  0.0713   1487 switches
+hyp016      0.0275  0.0126   0.0353  0.0262   1285 switches
+pam013      0.5815  0.0701  -0.0142 -0.0095   1515 switches
+
+All (Fisher's method):
+ Chi2 :    31.4300
+ Df   :    20
+ Prob :    0.049764
+
+Pop : cayos holandeses
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.7665  0.0412   0.0237 -0.0110   1862 switches
+gag010      0.0757  0.0256  -0.0633 -0.0364   3911 switches
+h24         0.4071  0.0805   0.0344  0.0354   1789 switches
+hyp001      0.2763  0.0191  -0.0558 -0.0315  15363 switches
+hyp015      0.5183  0.0231   0.1183  0.0136   4243 switches
+hyp018      0.5458  0.0089  -0.0484 -0.0224  37981 switches
+e2          0.5241  0.0240   0.0027  0.0943  14580 switches
+hyp008      0.9080  0.0357  -0.0515 -0.0261    844 switches (low!)
+hyp016      0.1226  0.0375  -0.0277 -0.0142    972 switches (low!)
+pam013      0.9494  0.0252  -0.0303 -0.0203   1550 switches
+
+All (Fisher's method):
+ Chi2 :    18.3738
+ Df   :    20
+ Prob :    0.562801
+
+Pop : islas puyadas
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.7504  0.0716   0.0011 -0.0036   1024 switches
+gag010      0.9567  0.0152  -0.0429 -0.0319   2533 switches
+h24         0.6891  0.0441   0.0545  0.0318   2826 switches
+hyp001      0.0667  0.0104  -0.0980 -0.0545  24291 switches
+hyp015      0.8190  0.0292   0.0717  0.0093   2988 switches
+hyp018      0.9598  0.0047   0.0505  0.0025   6822 switches
+e2          0.9452  0.0094   0.0064  0.0022   6978 switches
+hyp008      0.0089  0.0067   0.0379  0.0318   1036 switches
+hyp016      0.2087  0.0455   0.0182  0.0112   1464 switches
+pam013      0.0665  0.0259  -0.0093  0.0071   1426 switches
+
+All (Fisher's method):
+ Chi2 :    25.4181
+ Df   :    20
+ Prob :    0.185901
+
+Pop : cayos ratones
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.4121  0.0649   0.0490  0.0084   1879 switches
+gag010      0.0498  0.0189   0.0047 -0.0057   1791 switches
+h24         0.0234  0.0120   0.1209  0.0422   2818 switches
+hyp001      0.0784  0.0076   0.0288  0.0157  33887 switches
+hyp015      0.8837  0.0067   0.0282 -0.0075   6893 switches
+hyp018      0.7688  0.0070  -0.1140 -0.0662  31897 switches
+e2          0.8094  0.0112  -0.0216 -0.0083   8666 switches
+hyp008      0.1318  0.0616   0.0522  0.0450    697 switches (low!)
+hyp016      0.0398  0.0258   0.0330  0.0577    798 switches (low!)
+pam013      0.9208  0.0368   0.0198  0.0043   1427 switches
+
+All (Fisher's method):
+ Chi2 :    32.2325
+ Df   :    20
+ Prob :    0.040884
+
+Pop : cayos ingleses
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.4112  0.0681  -0.0255 -0.0113   1533 switches
+gag010      0.5031  0.0454  -0.0175 -0.0171   1730 switches
+h24         0.2292  0.0496   0.0242 -0.0056   1787 switches
+hyp001      0.5632  0.0182  -0.0433 -0.0283  18040 switches
+hyp015      0.7935  0.0202  -0.0759 -0.0366   6290 switches
+hyp018      0.9652  0.0012  -0.0213 -0.0209  39465 switches
+e2          0.6945  0.0313  -0.0635 -0.0271   2112 switches
+hyp008      0.0449  0.0290   0.0481  0.0311    878 switches (low!)
+hyp016      0.6349  0.0753  -0.0268 -0.0131    594 switches (low!)
+pam013      0.4011  0.0748   0.0057 -0.0090   1344 switches
+
+All (Fisher's method):
+ Chi2 :    17.4519
+ Df   :    20
+ Prob :    0.623463
+
+Pop : achutupu
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.3581  0.0700  -0.0005 -0.0193   1394 switches
+gag010      0.0490  0.0177   0.1005  0.0574   1643 switches
+h24         0.1788  0.0442   0.0005 -0.0071   2430 switches
+hyp001      0.4484  0.0128   0.0054 -0.0202  19346 switches
+hyp015      0.7513  0.0150  -0.0287 -0.0220   7753 switches
+hyp018      0.0208  0.0031   0.0567  0.0100  16320 switches
+e2          0.1978  0.0314   0.1469  0.1245   4447 switches
+hyp008      0.2466  0.0715   0.0782  0.0352   1053 switches
+hyp016      0.3238  0.0820  -0.0338 -0.0216   1146 switches
+pam013      0.3866  0.0638  -0.0068  0.0064    899 switches (low!)
+
+All (Fisher's method):
+ Chi2 :    31.6407
+ Df   :    20
+ Prob :    0.047280
+
+Pop : isla dupak
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.6125  0.0707  -0.0059 -0.0077   1378 switches
+gag010      0.0453  0.0349  -0.0345 -0.0139   1583 switches
+h24         0.8666  0.0257  -0.0841 -0.0421   2291 switches
+hyp001      0.6520  0.0177   0.0532  0.0290  14738 switches
+hyp015      0.2343  0.0084   0.0763  0.0242  11501 switches
+hyp018      0.4361  0.0170   0.0377  0.0683  18612 switches
+e2          0.9826  0.0073  -0.1086 -0.0378   3333 switches
+hyp008      0.0553  0.0196   0.0620  0.0259   1208 switches
+hyp016      0.8061  0.0499  -0.0166 -0.0177   1338 switches
+pam013      0.5605  0.0524  -0.0597 -0.0291   1063 switches
+
+All (Fisher's method):
+ Chi2 :    20.2860
+ Df   :    20
+ Prob :    0.440170
+
+Pop : goedup
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.4232  0.0713  -0.0563 -0.0156   1311 switches
+gag010      0.0033  0.0028   0.0142  0.0153   1261 switches
+h24         0.7802  0.0395  -0.0516 -0.0097   1922 switches
+hyp001      0.1282  0.0104  -0.0629 -0.0381  24622 switches
+hyp015      0.1178  0.0081   0.2151  0.1707  14544 switches
+hyp018      0.5738  0.0101  -0.1641 -0.0871  18213 switches
+e2          0.3899  0.0205   0.0723  0.0104  11476 switches
+hyp008      0.0162  0.0087   0.0994  0.0628   1491 switches
+hyp016      0.1587  0.0442   0.0506  0.0484    953 switches (low!)
+pam013      0.6298  0.0724   0.0004  0.0008   1277 switches
+
+All (Fisher's method):
+ Chi2 :    37.8504
+ Df   :    20
+ Prob :    0.009236
+
+Pop : barbados
+-----------------------------------------
+                             Fis estimates
+                            ---------------
+locus       P-val   S.E.    W&C     R&H     Steps 
+----------- ------- ------- ------- ------- ------
+g2          0.7751  0.0503  -0.0603 -0.0295   1753 switches
+gag010      0.6125  0.0483   0.0368  0.0112   3087 switches
+h24         0.8329  0.0342   0.0007  0.0004   2314 switches
+hyp001      0.6729  0.0126   0.0458  0.0191  21495 switches
+hyp015      0.8407  0.0098  -0.0401 -0.0217   9986 switches
+hyp018      0.3032  0.0221  -0.0112 -0.0115   8303 switches
+e2          0.4656  0.0135  -0.0483  0.0493  17735 switches
+hyp008      0.8821  0.0187   0.0134  0.0072   6441 switches
+hyp016      0.9596  0.0176  -0.0300 -0.0179   1586 switches
+pam013      0.8658  0.0416  -0.0047  0.0032    950 switches (low!)
+
+All (Fisher's method):
+ Chi2 :    7.5320
+ Df   :    20
+ Prob :    0.994539
+==========================================
+ All locus, all populations 
+==========================================
+All (Fisher's method) :
+ Chi2 :     > 350.4062
+ Df   :    300
+ Prob :     < 0.023881
+
+Normal ending
