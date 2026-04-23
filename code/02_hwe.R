@@ -1,6 +1,6 @@
 ### ======================================================================== ###
 ### Exercises in Marine Ecological Genetics 2026                             ###
-### 01. Introduction and setup                                               ###
+### 02. Hardy-Weinberg equilibrium                                           ###
 ### ======================================================================== ###
 
 
@@ -33,7 +33,7 @@ rstudio-start-on-rosa.sh
 
 
 ### Go to http://localhost:8000 in your browser
-#> RStudio will lanuch automatidcally
+#> RStudio will launch automatically
 
 
 
