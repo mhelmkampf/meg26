@@ -1,6 +1,6 @@
 ### ======================================================================== ###
 ### Exercises in Marine Ecological Genetics 2026                             ###
-### 03. Populatioin structure and F-statistics                               ###
+### 03. F-statistics and population structure I                              ###
 ### ======================================================================== ###
 
 
@@ -19,19 +19,19 @@ cd meg26
 git pull
 
 
+### Start interactive shell session (new step!)
+srun --pty --partition all_cpu.p --ntasks=1 --time=02:00:00 --mem=8G bash
+
+
 ### Load RStudio module
 module load RStudio-Server
-
-
-### Start interactive shell session
-srun
 
 
 ### Execute script to start RStudio
 rstudio-start-on-rosa.sh
 
 
-### Copy the SSH command provided at 1) and execute in new terminal tab or window
+### Copy the SSH command provided at step 1) and execute in new terminal tab or window
 #> ssh -N -L 8000: ...
 #> re-enter your password, and note nothing will change in the terminal on success
 
@@ -66,7 +66,7 @@ caribbean <- read.genepop("data/msats/puella_caribbean.gen", ncode = 3)
 pegas::Fst(as.loci(caribbean))
 
 
-### Calculate global F-statistics (averaged across loci)
+### Calculate global F-statistics (averaged across loci, see bottom of output)
 genepop::Fst("data/msats/puella_caribbean.gen",
              outputFile = "work/Fst_caribbean.txt")
 
@@ -75,7 +75,7 @@ genepop::Fst("data/msats/puella_caribbean.gen",
 
 
 ### For comparison, read in hamlet species dataset
-hamletsp <- read.genepop("data/msats/hamlets_caribbean.gen", ncode = 3)
+hamlets <- read.genepop("data/msats/hamlets_caribbean.gen", ncode = 3)
 
 
 ### Calculate F-statistics for the hamlet species dataset
@@ -87,10 +87,6 @@ test_diff("data/msats/puella_caribbean.gen", outputFile = "work/Diff_caribbean.g
 test_diff("data/msats/hamlets_caribbean.gen", outputFile = "work/Diff_hamlets.gen")
 
 
-### Bonus question: Does self-fertilization occur regularly in hamlets?
-# Hint: look at Fis in the H. puella dataset (caribbean)
-
-
 
 ### ============================================================================
 ### Exercise 2: Calculate population-specific Fst (beta)
@@ -100,13 +96,13 @@ install.packages("hierfstat")
 library(hierfstat)
 
 
-### Population-specific Fst (beta)
-# How much does each population deviate from the overall mean in terms of allele frequencies?
-betas(hamletsp)
+### Population-specific Fst (beta, Weir and Goudet 2017)
+# How much do the allele frequencies in each population deviate from the overall mean?
+betas(hamlets)
 
 
 ### Convert output to tidyverse data frame (tibble) -- execute step by step to follow the pipeline
-b <- betas(hamletsp)$betaiovl %>%                    # extract Fsts from betas object
+b <- betas(hamlets)$betaiovl %>%                     # extract Fsts from betas object
   bind_rows() %>%                                    # convert to tibble
   pivot_longer(cols = everything(),                  # transform data from wide to long format
                names_to = "Population",
@@ -125,7 +121,7 @@ ggplot(data = b,
        aes(x = reorder(Population, -Fst),           # reorder x-axis by descending Fst values
            y = Fst,
            fill = Species)) +                       # add fill mapping (color bars by species)
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "identity", alpha = 0.75) +       # make colors semi-transparent (alpha)
   scale_fill_manual(values = c("abe" = "#DFDF8D",   # define fill colors for species
                                "chl" = "#8B4513", 
                                "gum" = "#F99729",
@@ -146,18 +142,18 @@ ggplot(data = b,
 
 
 ### ============================================================================
-### Exercise 3: Pairwise Fst / Visualize population structure using PCoA
+### Exercise 3: Pairwise Fst / visualize population structure using PCoA
 
-### Calculate matrix of pairwise Fst
-d <- genet.dist(hamlets, method = "Nei87")   # pairwise Fst following Nei (1978)
+### Calculate matrix of pairwise Fst (Nei 1978)
+d <- genet.dist(hamlets, method = "Nei87")
 d
 
 
-### Basic plotting
+### Calculate principal coordinates (PCoA) from pairwise Fst matrix
 p <- pcoa(as.matrix(d))
 
 
-### Create tidyverse data frame (tibble) with first two axes
+### Create tidyverse data frame (tibble) with first two principal coordinates
 t <- tibble(pco1 = p$vecp[, 1], 
             pco2 = p$vecp[, 2], 
             population = colnames(as.matrix(d))) %>%
@@ -170,25 +166,25 @@ g <-
          aes(x = pco1, 
              y = pco2,
              color = Species)) +
-  geom_point(size = 3) +
-  scale_fill_manual(values = c("abe" = "#DFDF8D",
-                               "chl" = "#8B4513", 
-                               "gum" = "#F99729",
-                               "ind" = "#22198E", 
-                               "nig" = "#333333", 
-                               "pue" = "#E48175", 
-                               "uni" = "#B3B3B3")) +
+  geom_point(size = 3, alpha = 0.75) +
+  scale_color_manual(values = c("abe" = "#DFDF8D",
+                                "chl" = "#8B4513", 
+                                "gum" = "#F99729",
+                                "ind" = "#22198E", 
+                                "nig" = "#333333", 
+                                "pue" = "#E48175", 
+                                "uni" = "#B3B3B3")) +
   labs(x = "PCoA 1",
        y = "PCoA 2") +
   theme(
     panel.border = element_rect(colour = "black", fill = NA, size = 1),
     panel.background = element_rect(fill = "transparent")
-  )
+    )
 
 g
 
 
-### How does the Fst-based PCoA compare to the Fst barplot from exercise 2?
+### How does the Fst-based PCoA compare to the per-population Fsts from exercise 2?
 
 
 
@@ -202,16 +198,33 @@ levels(caribbean@pop)
 
 
 ### Calculate F-statistics for the hamlet species dataset
-pegas::Fst(as.loci(hamletsp))
+pegas::Fst(as.loci(hamlets))
 
 genepop::Fst("data/msats/hamlets_caribbean.gen",
              outputFile = "work/Fst_hamlets.txt")
 
 
-### Bonus question: Does self-fertilization occur regularly in hamlets?
-# Hint: look at Fis in the H. puella dataset (caribbean)
-pegas::Fst(as.loci(caribbean))
+# - in H. puella, Fst values are very low, suggesting gene flow / no population structure
+# - among hamlet species, Fst values are a bit higher, suggesting some population structure and limited gene flow
+# - the G-test for genetic differentiation is significant for some (puella dataset) and all (hamlet species) loci
 
-# Self-fertilization can be considered an extreme form of inbreeding, 
-# reducing the number of heterozygotes in each generation. The inbreeding coefficient 
-# Fis is close to 0 in H. puella, so self-fertilization does not seem to occur regularly
+
+
+### ============================================================================
+### Exercise 3 solution
+
+### How does the Fst-based PCoA compare to the per-population Fsts from exercise 2?
+# - both agree regarding the three most differentiated populations (indigo, gummigutta, nigricans from Panama)
+# - this suggests these populations are genetically distinct with limited gene flow
+# - the remaining populations are more similar to each other
+# - some overlap in the PCoA plot suggests more gene flow among these populations
+
+
+
+### ============================================================================
+### Homework
+
+### Does self-fertilization occur regularly in hamlets?
+# How would the number of heterozygotes be affected by self-fertilization? 
+# What would you expect for the inbreeding coefficient Fis in this case?
+# Use the H. puella dataset ("caribbean") to check your prediction
