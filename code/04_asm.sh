@@ -37,8 +37,8 @@ mv *.* msats   # mv all files into msats
 
 
 ### Create link to hamlet genome assemblies
-ln -s /fs/dss/home/haex1482/share/HypPue1_assembly_ref.fas HypPue1_assembly_ref.fas
-ln -s /fs/dss/home/haex1482/share/HypPue2_assembly_pacbio.fas HypPue2_assembly_pacbio.fas
+ln -s /nfs/data/haex1482/shared/course/HypPue1_assembly_ref.fas HypPue1_assembly_ref.fas
+ln -s /nfs/data/haex1482/shared/course/HypPue2_assembly_pacbio.fas HypPue2_assembly_pacbio.fas
 
 
 ### Print assembly / first 10 lines to screen
@@ -71,51 +71,10 @@ head -n 4 HypPue2_pacbio_hifi.fastq
 
 
 ### ============================================================================
-### Exercise 2: Assess read quality and trim Illumina reads (optional)
-
-module load FastQC
-module load cutadapt
-
-mkdir fastqc
-
-
-### Run FastQC, a quality control tool for high-throughput sequence reads
-### https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-fastqc -o fastqc HypPue1_illumina_raw_F.fastq HypPue1_illumina_raw_R.fastq
-fastqc -o fastqc HypPue2_pacbio_hifi.fastq
-
-
-### Open a new terminal window on your local computer and download the HTML results
-scp user1234@rosa.hpc.uni-oldenburg.de:/user/user1234/work/fastq/*.html .
-
-
-### Open HTML results with browser
-
-
-### Alternatively, print results as text only
-# lynx -dump fastqc/HypPue1_illumina_raw_F_fastqc.html
-
-
-### Back on the cluster, remove adapters and low quality bases from Illumina reads
-cutadapt -h
-
-cutadapt \
-  -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
-  -q 20 \
-  -m 120 \
-  -o HypPue1_illumina_trimmed_F.fastq \
-  HypPue1_illumina_raw_F.fastq
-
-
-### Re-run FastQC on trimmed reads and compare before and after
-#>
-
-
-
-### ============================================================================
-### Exercise 3: Calculate and compare assembly metrics
+### Exercise 2: Calculate and compare assembly metrics
 
 ### Install assembly_stats package for Python
+module load Python
 pip install assembly_stats
 
 assembly_stats HypPue1_assembly_ref.fas
@@ -127,31 +86,30 @@ assembly_stats HypPue2_assembly_pacbio.fas
 
 
 ### ============================================================================
-### Exercise 4: Assemble genome using hifiasm
+### Exercise 3: Assemble genome using hifiasm
 
 mkdir hifiasm
+cd hifiasm
 
 module load hifiasm
 
 hifiasm -h
 
 
-### Create link to subset of PacBio HiFi reads (30000 reads, about 1 GB)
-ln -s /fs/dss/home/haex1482/share/HypPue2_pacbio_30k.fastq.gz HypPue2_pacbio_30k.fastq.gz
+### Create link to subset of PacBio HiFi reads (100000 reads, about 3 GB)
+ln -s /nfs/data/haex1482/shared/course/HypPue2_pacbio_30k.fastq.gz HypPue2_pacbio_30k.fastq.gz
 
 
 ### Assemble with hifiasm, a fast and accurate assembler for Hifi reads
 hifiasm \
-  -o hifiasm/test30k \
+  -o test30k \
   --primary \
-  -t 10 \
+  -t 8 \
   HypPue2_pacbio_30k.fastq.gz
 
 
 ### Convert assembly graph to fasta format and calculate metrics
-cd hifiasm
-
-awk '/^S/{print ">"$2; print $3}' test30k.p_ctg.gfa > test30k.p_ctg.fas
+awk '/^S/{ print ">"$2; print $3 }' test30k.p_ctg.gfa > test30k.p_ctg.fas
 
 #>
 
@@ -186,15 +144,7 @@ grep -c '^+$' HypPue2_pacbio_hifi.fastq
 
 
 ### ----------------------------------------------------------------------------
-### Solutions: Exercise 2
-
-### Re-run FastQC on trimmed reads
-fastqc -o fastqc HypPue1_illumina_trimmed_F.fastq
-
-
-
-### ----------------------------------------------------------------------------
-### Solutions: Exercise 4
+### Solutions: Exercise 3
 
 ### Calculate assembly metrics
 assembly_stats test30k.p_ctg.fas
