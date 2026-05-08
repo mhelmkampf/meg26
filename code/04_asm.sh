@@ -23,7 +23,7 @@ git pull
 
 
 ### ============================================================================
-### Exercise 1: Handle genome assemblies on the command line
+### Exercise 1: Inspect raw sequecing reads on the command line
 
 ### Reorganize your work directory
 cd work        # change into work/ directory
@@ -32,9 +32,35 @@ mkdir msats    # make new subdirectory called "msats"
 mv *.* msats   # mv all files into msats
 
 
-### Make new subdirectory called "asm" in work/ and navigate there
-#>
+### Create new subdirectory called "asm" in work/ and navigate there
+#> 
 
+
+### Copy raw sequencing data to working directory, and decompress files
+cp ~/meg26/data/asm/*.fastq.gz .
+gzip -d *.fastq.gz
+
+
+### Print whole assembly
+cat HypPue1_illumina_raw_F.fastq
+
+
+### Print only first four lines
+head -n 4 HypPue1_illumina_raw_F.fastq
+head -n 4 HypPue2_pacbio_hifi.fastq
+
+
+### How do the Illumina and PacBio reads differ?
+
+
+### How could we count the number of sequences?
+# Hint: grep -c '<pattern>' HypPue1_illumina_raw_F.fastq (replace <pattern>)
+#> 
+
+
+
+### ============================================================================
+### Exercise 2: Compare genome assemblies and calculate assembly metrics
 
 ### Create link to hamlet genome assemblies
 ln -s /nfs/data/haex1482/shared/course/HypPue1_assembly_ref.fas HypPue1_assembly_ref.fas
@@ -47,41 +73,27 @@ head HypPue1_assembly_ref.fas
 
 
 ### Print only first line (header of first sequence)
-### Review usage of "head" with: man head
-#>
+#> 
 
-
-### Look at a slice of underlying read data
-cp ~/meg26/data/asm/*.fastq.gz .
-gzip -d *.fastq.gz
-
-cat HypPue1_illumina_raw_F.fastq
-
-head -n 4 HypPue1_illumina_raw_F.fastq
-head -n 4 HypPue2_pacbio_hifi.fastq
-
-
-### How do the underlying Illumina and PacBio reads differ?
-
-
-### How could we count the number of sequences?
-### Use: grep -c '<pattern>' HypPue1_illumina_raw_F.fastq
-#>
-
-
-
-### ============================================================================
-### Exercise 2: Calculate and compare assembly metrics
 
 ### Install assembly_stats package for Python
 module load Python
 pip install assembly_stats
 
+
+### Calculate basic assembly metrics
 assembly_stats HypPue1_assembly_ref.fas
 assembly_stats HypPue2_assembly_pacbio.fas
 
 
 ### How do the two assemblies differ?
+
+
+### Create link to a third genome assembly (Blackchin guitarfish)
+ln -s /nfs/data/haex1482/shared/course/GlaCem1_assembly_pacbio.fas GlaCem1_assembly_pacbio.fas
+
+
+### How does this assembly compare to the two hamlet assemblies?
 
 
 
@@ -96,7 +108,7 @@ module load hifiasm
 hifiasm -h
 
 
-### Create link to subset of PacBio HiFi reads (100000 reads, about 3 GB)
+### Create link to subset of PacBio HiFi reads (30000 reads, about 1 GB)
 ln -s /nfs/data/haex1482/shared/course/HypPue2_pacbio_30k.fastq.gz HypPue2_pacbio_30k.fastq.gz
 
 
@@ -128,19 +140,38 @@ head -n 2 HypPue1_assembly_ref.fas | cut -c -100000 | grep -E '(AC|GT){10,}'
 ### ============================================================================
 ### Solutions: Exercise 1
 
-### New directory
+### Create new directory and navigate there
 mkdir asm
 cd asm
 
 
-### Print first line only
-head -n 1 HypPue1_assembly_ref.fas
+### How do the Illumina and PacBio reads differ?
+# - Illumina reads are short, and of equal length
+# - PacBio reads are much longer, and of variable length
 
 
-### Counting reads in Fastq file
+### Count number of reads in Fastq file
 grep -c '^+$' HypPue1_illumina_raw_F.fastq
 grep -c '^+$' HypPue2_pacbio_hifi.fastq
 
+
+### ----------------------------------------------------------------------------
+### Solutions: Exercise 2
+
+
+### Print only first line (header of first sequence)
+head -n 1 HypPue1_assembly_ref.fas
+head -n 1 HypPue2_assembly_pacbio.fas
+
+
+### How do the two assemblies differ?
+# - the reference genome (Illumina / PacBio hybrid) contains a much larger number of contigs / scaffolds
+# - contiguity (N50) is very high for both assemblies
+# - the reference genome achieves this by scaffolding, the PacBio assembly by using long reads
+
+
+### How does the guitarfish genome assembly compare to the two hamlet assemblies?
+assembly_stats GlaCem1_assembly_pacbio.fas
 
 
 ### ----------------------------------------------------------------------------
