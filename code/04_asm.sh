@@ -41,7 +41,7 @@ cp ~/meg26/data/asm/*.fastq.gz .
 gzip -d *.fastq.gz
 
 
-### Print whole assembly
+### Print whole file
 cat HypPue1_illumina_raw_F.fastq
 
 
