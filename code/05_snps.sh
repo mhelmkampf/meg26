@@ -21,7 +21,7 @@ git pull
 # git clone https://github.com/mhelmkampf/meg26.git
 
 
-### Create and navigate to today's working directory (e.g. "snp")
+### Create and navigate to today's working directory (e.g. "snps")
 #>
 
 
@@ -34,7 +34,8 @@ ml BCFtools   # https://samtools.github.io/bcftools/bcftools.html
 
 
 ### Create link to today's SNP dataset
-ln -s /nfs/data/haex1482/shared/course/hamlets_snps_lg12.vcf.gz hamlets_snps_lg12.vcf.gz
+ln -s /nfs/data/haex1482/shared/course/hamlets_snps_lg12.vcf.gz \
+  hamlets_snps_lg12.vcf.gz
 
 
 ### Inspect the header (## / #)
@@ -84,14 +85,14 @@ Rscript -e '
   depth <- read.table("depth.idepth", header=TRUE)
   d <- merge(miss, depth, by="INDV")
 
-  png("indv_depth_vs_missing.png", width=600, height=500)
+  png("indiv_depth_vs_missing.png", width=600, height=500)
   plot(d$MEAN_DEPTH, d$F_MISS,
        xlab="Mean depth", ylab="Fraction missing",
-       pch=16, col="red")
+       pch=16, col="steelblue")
   dev.off()
 '
 
-display indv_depth_vs_missing.png
+display indiv_depth_vs_missing.png
 
 
 ### Calculate missing data per site
@@ -122,25 +123,27 @@ vcftools \
   --max-missing 0.8 \
   --out 2_mfilt
 
-# Note: genotypes that fail --minDP filter are set to missing,
-# sites are dropped if > 20 % missing with --max-missing
+# Note: genotypes that fail the --minDP filter are set to missing,
+# sites are then dropped if > 20 % of data is missing with --max-missing
 
 
 ### Step 3: keep only biallelic sites with --max-alleles
 #>
 
 
-### Step 4: remove rare variants (MAC filter)
+### Step 4: remove rare variants (allele frequency filter)
 vcftools \
   --gzvcf hamlets_snps_lg12.vcf.gz \
   --minQ 40 \
   --minDP 10 \
   --max-missing 0.8 \
   --max-alleles 2 \
-  --mac 2 \
+  --maf 0.05 \
   --out 4_final
 
 # Why might we want to remove rare alleles?
+
+# Which filter removed the most sites?
 
 
 ### Write final VCF
@@ -150,44 +153,43 @@ vcftools \
   --minDP 10 \
   --max-missing 0.8 \
   --max-alleles 2 \
-  --mac 2 \
+  --maf 0.05 \
   --recode \
   --stdout | bgzip > hamlets_filt_lg12.vcf.gz
 
 
-### Summary statistics of final VCF
+### Summary statistics of filtered VCF
 bcftools stats hamlets_filt_lg12.vcf.gz | grep "^SN"
 
 
-### Calculate allele counts before filtering
+### Calculate allele frequencies per site before filtering
 vcftools --gzvcf hamlets_snps_lg12.vcf.gz \
-  --counts \
+  --freq \
   --out raw_snps
 
-less raw_snps.frq.count
+less raw_snps.frq
 
 
-### Calculate allele counts after filtering
+### Calculate allele frequencies per site after filtering
 vcftools --gzvcf hamlets_filt_lg12.vcf.gz \
-  --counts \
+  --freq \
   --out filt_snps
 
-less filt_snps.frq.count
+less filt_snps.frq
 
 
-### Extract minor allele frequency with awk
+### Extract minor allele frequencies with awk
 awk 'NR > 1 {
   split($5, a, ":")
   split($6, b, ":")
-  mac = (a[2] < b[2]) ? a[2] : b[2]
-  maf = mac / $4
+  maf = (a[2] < b[2]) ? a[2] : b[2]
   print maf
-}' A_freq.frq > maf.txt
+}' filt_snps.frq > filt_snps.maf
 
 
-### Plot in R
+### Plot minor allele frequency distribution in R
 Rscript -e '
-  maf <- scan("maf.txt")
+  maf <- scan("filt_snps.maf")
   
   png("maf_distribution.png", width=800, height=500)
   hist(maf,
@@ -200,10 +202,6 @@ Rscript -e '
   abline(v=0.05, col="red", lty=2, lwd=2)
   legend("topright", legend="MAF = 0.05 threshold", col="red", lty=2, lwd=2)
   dev.off()
-  
-  cat("Total sites:", length(maf), "\n")
-  cat("Sites with MAF < 0.05:", sum(maf < 0.05), "\n")
-  cat("Sites with MAF == 0:", sum(maf == 0), "\n")
 '
 
 display maf_distribution.png
