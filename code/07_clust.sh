@@ -188,7 +188,7 @@ done
 ### Print CV error to find best k
 for k in {1..6}
 do
-    grep 'CV' hamlets_filt_lg12_k${k}.out \
+    grep 'CV' hamlets_filt_lg12_k${k}.out
 done
 
 
