@@ -1,6 +1,6 @@
 ### ======================================================================== ###
 ### Exercises in Marine Ecological Genetics 2026                             ###
-### 07. Genetic clustering (population structure II)                         ###
+### 07. Genetic clustering                                                   ###
 ### ======================================================================== ###
 
 
@@ -44,10 +44,12 @@ rstudio-start-on-rosa.sh
 ### ============================================================================
 ### Exercise 1: PCA based on SNP data
 
-### Use the bash Terminal built into RStudio
+### Switch to the bash Terminal built into RStudio
 
-mkdir clust
-cd clust
+
+### Create and navigate to today's working directory (e.g. "clust")
+#>
+
 
 module load VCFtools
 
@@ -57,10 +59,7 @@ ln -s /nfs/data/haex1482/shared/course/hamlets_snps_lg12.vcf.gz \
   hamlets_snps_lg12.vcf.gz
 
 
-### Filter SNPs without dropping rare alleles (--maf)
-
-
-### Filter SNP in preparation for PCA by removing rare and physically linked sites
+### Filter SNP in preparation for clustering by removing rare and physically linked sites
 # key parameters: --maf, --thin
 vcftools \
   --gzvcf hamlets_snps_lg12.vcf.gz \
@@ -89,7 +88,7 @@ library(tidyverse)
 
 
 ### Read VCF file into R
-vcf <- read.vcfR("hamlets_pca_lg12.vcf.gz")
+vcf <- read.vcfR("hamlets_filt_lg12.vcf.gz")
 
 
 ### Convert from vcfR to genlight object
@@ -97,7 +96,7 @@ gl <- vcfR2genlight(vcf)
 
 
 ### Principal Component Analysis (PCA)
-pca <- glPca(gl, nf = 2)   # 2 principal components
+pca <- glPca(gl, nf = 2)   # retain 2 principal components
 
 
 ### Print principal components to screen
@@ -111,7 +110,7 @@ scores <- pca$scores %>%
 
 
 ### Basic PCA plot
-#> p <- ggplot(...)
+#> p <- ggplot(..., aes(x = ..., y = ..., color = ...)) + geom_point()
 
 
 ### Improve plot visually
@@ -129,13 +128,12 @@ q <- p + scale_color_manual(values = c("mediumseagreen",
   )
 
 
-### Eigenvalues: proportion of variance explained by each PC
+### Eigenvalues: amount of genetic variance along each PC
 pca$eig
 
+
+### Proportion of variance explained, and its distribution
 var <- pca$eig / sum(pca$eig)
-
-
-### Distribution of eigenvalues
 barplot(var, main = "Proportion of variance explained", las = 2)
 
 
@@ -172,7 +170,7 @@ gzip -cd hamlets_filt_lg12.vcf.gz | \
   --out hamlets_filt_lg12
 
 
-### Run ADMIXTURE with cross-validation
+### Run ADMIXTURE with cross-validation (CV)
 for k in {1..6}
 do
     admixture \
@@ -180,12 +178,17 @@ do
     hamlets_filt_lg12.bed $k > hamlets_filt_lg12_k${k}.out
 done
 
+# Note on CV:
+# - for each k, temporarily hides a subset of genotype data
+# - fits the model using the remaining data
+# - predicts the hidden genotypes
+# - calculates a CV error that reflects prediction accuracy (lower = better)
 
-### Print CV error to find best k (lowest error)
+
+### Print CV error to find best k
 for k in {1..6}
 do
     grep 'CV' hamlets_filt_lg12_k${k}.out \
-    >> cv_k1-6.out
 done
 
 
@@ -193,11 +196,11 @@ done
 #>
 
 
-### Retrieve sample ids from plink output
+### Retrieve and sort sample ids from plink output
 awk '{ print $2 }' hamlets_filt_lg12.fam > sample_ids.txt
 
 
-### Check whether all samples are accounted for in sample_ids.txt
+### Check whether sample_ids.txt contains all 36 samples
 #>
 
 
@@ -205,33 +208,32 @@ awk '{ print $2 }' hamlets_filt_lg12.fam > sample_ids.txt
 for k in {1..6}
 do
     paste -d " " sample_ids.txt hamlets_filt_lg12.${k}.Q \
-    > aprop_k${k}.csv
+    > anprop_k${k}.csv
 done
 
 
 ### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< R >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 ### Read in data for k = 2
-admix2 <- read_delim("aprop_k2.csv", delim = " ", col_names = c("Sample", "P1", "P2"))
+admix2 <- read_delim("anprop_k2.csv", delim = " ", col_names = c("Sample", "P1", "P2"))
 
 
 ### Pivot to long format and reformat sample name
 long2 <- admix2 %>%
-  pivot_longer(cols = starts_with("P"),
-  names_to = "Ancestry",
-  values_to = "Proportion"
-  )
+  pivot_longer(cols = starts_with("P"), names_to = "Ancestry", values_to = "Proportion") %>%
+  mutate(Name = paste0(str_sub(Sample, -6), "_", str_sub(Sample, 1, 5)))
 
 
 ### Basic admixture plot
-a2 <- ggplot(long2, aes(x = Sample, y = Proportion, fill = Ancestry)) +
+a2 <- ggplot(long2, aes(x = Name, y = Proportion, fill = Ancestry)) +
     geom_bar(position = "fill", stat = "identity")
 
 
 ### Improve plot visually
-a2 + labs(x = NULL, y = NULL, tag = "k = 2") +   # add tag label
-  theme_minimal() +                              # basic style package
-  theme(                                         # specific changes to style (fonts, grid lines etc.)
+a2 + scale_fill_brewer(palette = "Dark2") +   # color palette
+  labs(x = NULL, y = NULL, tag = "k = 2") +   # add tag label
+  theme_minimal() +                           # basic style package
+  theme(                                      # specific changes to style (fonts, grid lines etc.)
     text = element_text(color = "grey20"),
     panel.grid = element_blank(),
     axis.text.x = element_text(size = 10, color = "gray20", angle = 45, hjust = 1),
@@ -247,6 +249,9 @@ a2 + labs(x = NULL, y = NULL, tag = "k = 2") +   # add tag label
 #>
 
 
+### How do the PCA and admixture plots compare?
+
+
 
 ### ============================================================================
 ### Optional
@@ -259,15 +264,17 @@ labels <- c("54761atlliz", "18267unibel")
 )
 
 ### Zoom into main cluster
-(q + geom_text(aes(label = ifelse(Sample %in% labels, Sample, "")),
-            size = 3, color = "gray20", vjust = -1) +
-  coord_cartesian(xlim = c(-7, -3), ylim = c(-10, 10))   # zoom into these coordinates
-)
+(q + coord_cartesian(xlim = c(-6, -3), ylim = c(-3, 3)))
 
 
 
 ### ============================================================================
 ### Solutions
+
+### Create and navigate to today's working directory (e.g. "clust")
+mkdir clust
+cd clust
+
 
 ### Print principal components to screen
 pca$scores
@@ -275,34 +282,33 @@ pca$scores
 
 ### Basic PCA plot
 p <- ggplot(data = scores, aes(x = PC1, y = PC2, color = Species)) +
-  geom_point(size = 5, alpha = 0.75)
+  geom_point(size = 4, alpha = 0.75)
 
 
 ### What is the best k?
-cat cv_k1-6.out   # CV error (K=2): 0.52125 <<<
+# >>> CV error (K=2): 0.52125 <<<
 
 
 ### Read in and plot ancestry proportions for k = 3, 4, 5 or 6
-admix4 <- read_delim("aprop_k4.csv", delim = " ", col_names = c("Sample", "P1", "P2", "P3", "P4"))
+admix4 <- read_delim("anprop_k4.csv", delim = " ", col_names = c("Sample", "P1", "P2", "P3", "P4"))
 
 
 ### Pivot to long format and reformat sample name
 long4 <- admix4 %>%
-  pivot_longer(cols = starts_with("P"),
-  names_to = "Ancestry",
-  values_to = "Proportion"
-  )
+  pivot_longer(cols = starts_with("P"), names_to = "Ancestry", values_to = "Proportion") %>%
+  mutate(Name = paste0(str_sub(Sample, -6), "_", str_sub(Sample, 1, 5)))
 
 
 ### Basic admixture plot
-a4 <- ggplot(long4, aes(x = Sample, y = Proportion, fill = Ancestry)) +
+a4 <- ggplot(long4, aes(x = Name, y = Proportion, fill = Ancestry)) +
     geom_bar(position = "fill", stat = "identity")
 
 
 ### Improve plot visually
-a4 + labs(x = NULL, y = NULL, tag = "k = 4") +   # add tag label
-  theme_minimal() +                              # basic style package
-  theme(                                         # specific changes to style (fonts, grid lines etc.)
+a4 + scale_fill_brewer(palette = "Dark2") +   # color palette
+labs(x = NULL, y = NULL, tag = "k = 4") +     # add tag label
+  theme_minimal() +                           # basic style package
+  theme(                                      # specific changes to style (fonts, grid lines etc.)
     text = element_text(color = "grey20"),
     panel.grid = element_blank(),
     axis.text.x = element_text(size = 10, color = "gray20", angle = 45, hjust = 1),
