@@ -44,7 +44,7 @@ rstudio-start-on-rosa.sh
 
 
 ### ============================================================================
-### Exercise 1: Genome-wide Fst scan
+### Exercise 1: Perform genome-wide Fst scan
 
 ### Switch to the bash Terminal built into RStudio
 
@@ -80,6 +80,10 @@ vcftools \
   --stdout | bgzip > hamlets_sel_lg12.vcf.gz
 
 
+### How many sites are retained in the new SNP dataset?
+#>
+
+
 ### Calculate joint Fst in sliding windows of 50 kb
 # Note: represents overall among-population variance relative to total variance
 vcftools \
@@ -111,121 +115,38 @@ library(tidyverse)
 fst_50k <- read_tsv("Fst_lg12_50k.tsv")
 
 
-### Plot BIN_START vs. WEIGHTED_FST using ggplot's geom_point()
-#>
-
-f <- ggplot(fst_50k, aes(x = BIN_START, y = WEIGHTED_FST)) +
-  geom_point(size = 0.25, alpha = 0.5) +
-  labs(x = "Position", y = "Fst") +
-  theme_minimal() +
-  theme(
-        panel.grid.minor = element_blank(),
-        panel.grid.major.x = element_blank()
-        )
+### Create Manhattan plot by plotting BIN_START vs. WEIGHTED_FST using ggplot's geom_point()
+#> f <- ggplot(..., aes(x = ..., y = ...) + geom_point()
 
 
-### Find the chromosome-wide, weighted Fst estimate in the VCFtools log file (using bash)
-#>
+### Assign chromosome-wide, weighted Fst estimate from Fst_lg12_50k.log to new variable (using bash)
+#> chrwide_fst <- ...
 
 
-### Assign value to a variable called "chrwide_fst"
-#> 
-
-
-### Add chromosome-wide Fst to plot
+### Add line representing chromosome-wide Fst to plot
 f + geom_hline(yintercept = chrwide_fst, color = "blue")
 
 
-### Identify 99.5% quantile
-quantile(fst_50k$WEIGHTED_FST, probs = 0.995)
+### Identify 99 % quantile (= 1 % most differentiated sites)
+threshold <- quantile(fst_50k$WEIGHTED_FST, 0.99)
 
 
-### Add variable to data table indicating outlier status
-out <- fst_50k %>%
-  mutate(OUTLIER = case_when(
-    WEIGHTED_FST > quantile(WEIGHTED_FST, probs = 0.995) ~ "yes",
-    TRUE ~ "no")
-  )
-
-
-### Plot with 99.5% quantile highlighted
-o <- ggplot(data = out, aes(x = BIN_START, y = WEIGHTED_FST, color = OUTLIER)) +
-    geom_point(size = 0.5, alpha = 0.5) +
-    geom_hline(yintercept = chrwide_fst, color = "blue") +
-    labs(x = "Window", y = "Fst") +
-    scale_color_manual(values = c("gray20", "red")) +
-    guides(color = "none") +
-    theme_minimal(base_size = 14) +
-    theme(panel.grid.minor = element_blank(),
-          panel.grid.major.x = element_blank()
-          )
+### Add line representing 99 % quantile to plot
+#> f + geom_hline(yintercept = chrwide_fst, color = "blue") + geom_hline(...)
 
 
 ### Retrieve positions of windows containing Fst peaks
-print(out %>% filter(OUTLIER == "yes"), n = nrow(out))
+outliers <- fst_50k %>% 
+  filter(WEIGHTED_FST >= threshold)
 
 
-### Genomic region of interest around highest Fst peak
-#> 20140001 - 20290000 (150 kb)
-
-
-### ----------------------------------------------------------------------------
-### The following inactive code was used to plot a PCA of the region of interest
-
-### Extract genomic region of interest from VCF file (bash)
-# vcftools --gzvcf hamlets_sel_lg12.vcf.gz \
-# --chr LG12 \
-# --from-bp 20140001 \
-# --to-bp 20290000 \
-# --recode \
-# --stdout | gzip > fstpeak_region.vcf.gz
-
-
-### Load packages
-# library(vcfR)
-# library(adegenet)
-
-
-### Read VCF file into R
-# vcf <- read.vcfR("fstpeak_region.vcf.gz")
-
-
-### Convert from vcfR to genlight object
-# data <- vcfR2genlight(vcf)
-
-
-### Principal Component Analysis (PCA)
-# pca <- glPca(data, nf = 2)
-
-
-### Convert to tibble, add species information
-# scores <- as.data.frame(pca$scores) %>%
-#   rownames_to_column("Sample") %>%
-#   as_tibble() %>%
-#   mutate(Species = str_sub(Sample, -6, -4))
-
-
-### Plot PCA
-# (p <- ggplot(data = scores, aes(x = PC1, y = PC2, color = Species)) +
-#   geom_point(size = 5, alpha = 0.75) +
-#   scale_color_manual(values = c("orange", "royalblue", "gray30", "coral", "gray70")) +
-#   theme_light() +
-#   theme(
-#     text = element_text(color = "gray20"),
-#     panel.grid = element_blank(),
-#     axis.title.x = element_text(vjust = -1.5)
-#   )
-# )
-
-
-### How do the PCAs of the high Fst region and the whole chromosome differ?
-### What trait seems to be affected, pointing to genes related to that trait under selection in the region?
-
+### What are the boundaries of the genomic region around the highest Fst peak?
+#> 
 
 
 
 ### ============================================================================
-### Exercise 2: Identify candidate genes under selection
+### Exercise 2: Investigate candidate genes under selection
 
 
 ### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< bash >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -235,20 +156,76 @@ ln -s /nfs/data/haex1482/shared/course/HypPue1_annotation.gff \
   HypPue1_annotation.gff
 
 
-###
-
-
 ### Extract region of interest from GFF file
-awk '$1 == "LG12" && $5 >= 20140001 && $4 <= 20290000' HypPue1_annotation.gff \
+awk '$1 == "LG12" && $5 >= 20135001 && $4 <= 20295000' HypPue1_annotation.gff \
   > highfst_region.gff
 
 
 ### What genes are found in this region?
+awk '$3 == "gene"' highfst_region.gff
 
 
 ### Find out more by searching for "casz1" at
-### NCBI Gene: https://www.ncbi.nlm.nih.gov/gene
-### Uniprot: https://www.uniprot.org
+#- Zebrafish Information Network (closest model organism): https://zfin.org
+#- NCBI Gene: https://www.ncbi.nlm.nih.gov/gene
+#- Uniprot: https://www.uniprot.org
+
+
+
+### ============================================================================
+### Optional: Extended Haplotype Homozygosity-based test using rehh
+
+
+### Create link to phased SNP dataset (minor allele count 2, thinned to 2 kb, without H. atlahua)
+ln -s /nfs/data/haex1482/shared/course/uni_phased2k_lg12.vcf.gz \
+  uni_phased2k_lg12.vcf.gz
+
+
+### Check for phasing
+zless uni_phased2k_lg12.vcf.gz
+# Note: phased genotypes use "|" instead of "/"
+
+
+### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< R >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+### Install / Load packages
+install.packages("rehh")
+
+library(rehh)
+library(vcfR)
+
+
+### Read in VCF with phased haplotypes (creates haplohh object)
+hap_uni <- data2haplohh(hap_file = "uni_phased2k_lg12.vcf.gz",
+                        haplotype.in.columns = TRUE,
+                        polarize_vcf = TRUE,
+                        vcf_reader = "vcfR")
+
+
+### Scan for EHH (Extended Haplotype Homology) along chromosome
+scan_uni <- scan_hh(hap_uni)
+
+
+### Calculate integrated haplotype score(iHS, standardized across allele frequencies)
+ihs_uni <- ihh2ihs(scan_uni)
+
+
+### Manhattan plot
+manhattanplot(ihs_uni)
+
+
+# Make plot prettier: Remove NAs and filter to iHS results
+ihs_df <- ihs_uni$ihs %>%
+  filter(!is.na(IHS))
+
+ggplot(ihs_df, aes(x = POSITION, y = IHS)) +
+  geom_point(aes(color = abs(IHS) > 2), size = 1.2) +
+  scale_color_manual(values = c("black", "red"), guide = "none") +
+  geom_hline(yintercept = c(-2, 2), linetype = "dashed", color = "red") +
+  labs(title = "iHS along Chromosome (Unicolor)",
+       x = "Genomic Position (bp)",
+       y = "iHS") +
+  theme_minimal()
 
 
 
@@ -263,3 +240,32 @@ cd sel
 
 ### Copy population id files from ~/meg26/data/meta to working directory
 cp ~/meg26/data/meta/*.txt .
+
+
+### How many sites are retained in the new SNP dataset?
+vcftools --gzvcf hamlets_sel_lg12.vcf.gz
+
+
+### Create Manhattan plot by plotting BIN_START vs. WEIGHTED_FST using ggplot's geom_point()
+f <- ggplot(fst_50k, aes(x = BIN_START, y = WEIGHTED_FST)) +
+  geom_point(size = 0.25, alpha = 0.5) +
+  labs(x = "Position", y = "Fst") +
+  theme_minimal() +
+  theme(
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank()
+        )
+
+
+### Assign chromosome-wide, weighted Fst estimate from Fst_lg12_50k.log to new variable (using bash)
+cat Fst_lg12_50k.log
+chrwide_fst <- 0.058942
+
+
+### Add line representing 99 % quantile to plot
+f + geom_hline(yintercept = chrwide_fst, color = "blue") 
+  + geom_hline(yintercept = threshold, color = "red")
+
+
+### What are the boundaries of the genomic region around the highest Fst peak?
+#> 20135001 - 20295000 (160 kb)
