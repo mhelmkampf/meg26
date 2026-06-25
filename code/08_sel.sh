@@ -112,7 +112,7 @@ library(tidyverse)
 
 
 ### Plot joint Fst, along 50 kb windows (Mantattan plot)
-fst_50k <- read_tsv("Fst_lg12_50k.tsv")
+fst_50k <- read_tsv("Fst_bars_50k.tsv")
 
 
 ### Create Manhattan plot by plotting BIN_START vs. WEIGHTED_FST using ggplot's geom_point()
@@ -263,8 +263,8 @@ chrwide_fst <- 0.058942
 
 
 ### Add line representing 99 % quantile to plot
-f + geom_hline(yintercept = chrwide_fst, color = "blue") 
-  + geom_hline(yintercept = threshold, color = "red")
+f + geom_hline(yintercept = chrwide_fst, color = "blue") +
+  geom_hline(yintercept = threshold, color = "red")
 
 
 ### What are the boundaries of the genomic region around the highest Fst peak?
