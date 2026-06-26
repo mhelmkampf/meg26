@@ -66,8 +66,13 @@ cp ~/meg26/data/barcode/read_${sample}R.ab1 .
 ### Extract sequence from trace files
 module load EMBOSS
 
-seqret -sequence read_${sample}F.ab1 -outseq read_${sample}F.fas
-seqret -sequence read_${sample}R.ab1 -outseq read_${sample}R.fas
+seqret \
+  -sequence read_${sample}F.ab1 \
+  -outseq read_${sample}F.fas
+
+seqret \
+  -sequence read_${sample}R.ab1 \
+  -outseq read_${sample}R.fas
 
 
 ### Verify output files are in Fasta format
@@ -80,18 +85,27 @@ module load SeqKit
 fstart=
 fend=
 
-seqkit subseq -r ${fstart}:${fend} read_${sample}F.fas > trim_${sample}F.fas
+seqkit subseq \
+  -r ${fstart}:${fend} \
+  read_${sample}F.fas \
+  > trim_${sample}F.fas
 
 
 ### Trim low-quality bases at end of read (adjust boundaries according to your case)
 rstart=
 rend=
 
-seqkit subseq -r ${rstart}:${rend} read_${sample}R.fas > trim_${sample}R.fas
+seqkit subseq \
+  -r ${rstart}:${rend} \
+  read_${sample}R.fas \
+  > trim_${sample}R.fas
 
 
 ### Reverse complement reverse sequence
-seqkit seq -r -p trim_${sample}R.fas > trim_${sample}R-rc.fas
+seqkit seq \
+  -r -p \
+  trim_${sample}R.fas \
+  > trim_${sample}R-rc.fas
 
 
 ### Merge foward and reverse sequences to consensus
@@ -100,6 +114,10 @@ merger \
   -bsequence trim_${sample}R-rc.fas \
   -outfile con_${sample}.txt \
   -outseq con_${sample}.fas
+
+
+### Inspect alignment to validate consensus
+cat con_${sample}.txt
 
 
 
@@ -114,7 +132,7 @@ merger \
 # Use default database (Animal Library (Public)) and operating mode (Rapid Species Search)
 
 
-### Paste your consensus sequence and submit
+### Paste your consensus sequence (con_${sample}.fas) and submit
 
 
 ### Explore the results
@@ -141,6 +159,10 @@ merger \
 
 ### Assign your sample to a variable for future use
 sample=10
+
+
+### Verify output files are in Fasta format
+cat read_${sample}F.fas
 
 
 ### Trim low-quality bases from start of read (adjust boundaries according to your case)
