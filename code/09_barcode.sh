@@ -44,47 +44,62 @@ cd barcode
 # (Ivanova et al. 2007, Molecluar Ecology Notes, lower case = tail)
 
 
-### You will be working with one of the following 11 samples:
+### You will be assigned one of the following 11 samples:
 ### 10, 11, 14, 15, 19, 20, 22, 26, 27, 28, 35
 
 
-### From meg25/data/barcode, copy your pair of ABI trace files to the working directory
-cp ~/meg25/data/barcode/seq_10F.ab1 .   # adjust file name here and below
-cp ~/meg25/data/barcode/seq_10R.ab1 .   # adjust file name here and below
+### Assign your sample to a variable for future use
+sample=
+echo ${sample}   # re-call variable
 
 
-### View sequence (download raw file from https://github.com/mhelmkampf and upload here:)
+### Copy your pair of ABI trace files to the working directory
+cp ~/meg26/data/barcode/read_${sample}F.ab1 .
+cp ~/meg26/data/barcode/read_${sample}R.ab1 .
+
+
+### View trace file
+# Download raw file from https://github.com/mhelmkampf/meg26 and upload here:
 #> https://www.gear-genomics.com/teal/
 
 
 ### Extract sequence from trace files
 module load EMBOSS
 
-seqret -sequence seq_10F.ab1 -outseq seq_10F.fas
-seqret -sequence seq_10R.ab1 -outseq seq_10R.fas
+seqret -sequence read_${sample}F.ab1 -outseq read_${sample}F.fas
+seqret -sequence read_${sample}R.ab1 -outseq read_${sample}R.fas
 
 
-### Trim sequences (adjust limits according to your case)
+### Verify output files are in Fasta format
+#>
+
+
+### Trim low-quality bases from start of read (adjust boundaries according to your case)
 module load SeqKit
 
-seqkit subseq -r 65:580 seq_10F.fas > trim_10F.fas
-seqkit subseq -r 50:470 seq_10R.fas > trim_10R.fas
+fstart=
+fend=
+
+seqkit subseq -r ${fstart}:${fend} read_${sample}F.fas > trim_${sample}F.fas
+
+
+### Trim low-quality bases at end of read (adjust boundaries according to your case)
+rstart=
+rend=
+
+seqkit subseq -r ${rstart}:${rend} read_${sample}R.fas > trim_${sample}R.fas
 
 
 ### Reverse complement reverse sequence
-seqkit seq -r -p trim_10R.fas > trim_10R-rc.fas
+seqkit seq -r -p trim_${sample}R.fas > trim_${sample}R-rc.fas
 
 
 ### Merge foward and reverse sequences to consensus
-
-# Usage:
-# merger \
-#   -asequence <forward.fas> \
-#   -bsequence <reverse.fas> \
-#   -outfile <consensus.txt> \
-#   -outseq <consensus.fas>
-
-#>
+merger \
+  -asequence trim_${sample}F.fas \
+  -bsequence trim_${sample}R-rc.fas \
+  -outfile con_${sample}.txt \
+  -outseq con_${sample}.fas
 
 
 
@@ -92,17 +107,17 @@ seqkit seq -r -p trim_10R.fas > trim_10R-rc.fas
 ### Exercise 2: Match sequence to Barcode of Life Data Systems (BOLD)
 
 
-### Visit https://v4.boldsystems.org/index.php
-### Note: https://boldsystems.org (version 5) does not have full functionality yet
+### Visit https://boldsystems.org
 
 
-### Select "Identification v4" | Animal Identification (COI) | Species Level Barcode Records (default)
+### Select "Barcode ID"
+# Use default database (Animal Library (Public)) and operating mode (Rapid Species Search)
 
 
 ### Paste your consensus sequence and submit
 
 
-### Explore the results:
+### Explore the results
 ### - What species has been identified?
 ### - Are there multiple species in the top 20? What is the similarity distribution?
 ### – Is it a plausible match considering the samples were obtained from seafood?
@@ -111,7 +126,7 @@ seqkit seq -r -p trim_10R.fas > trim_10R-rc.fas
 ### Optional: Learn more about your species at https://fishbase.de
 
 
-### Evaluate the reliability of your result by selecting its "Bin page"
+### Evaluate the reliability of your result on its "BIN page" (via PID > BIN ID)
 ### - What is the maximum p-distance within the species?
 ### – How does the distance distribution compare to the nearest neighbor? Is there a "barcode gap"?
 ### - How confident are you overall in your id?
@@ -124,15 +139,21 @@ seqkit seq -r -p trim_10R.fas > trim_10R-rc.fas
 ### ============================================================================
 ### Solutions:
 
-### Create consensus
-merger \
-  -asequence trim_10F.fas \
-  -bsequence trim_10R-rc.fas \
-  -outfile consensus_10.txt \
-  -outseq consensus_10.fas
+### Assign your sample to a variable for future use
+sample=10
 
 
-### All consensus sequences can be found in data/barcode/co1.fas
+### Trim low-quality bases from start of read (adjust boundaries according to your case)
+fstart=65
+fend=580
+
+
+### Trim low-quality bases from end of read (adjust boundaries according to your case)
+rstart=50
+rend=470
+
+
+### All consensus sequences can be found in results/barcodes_co1.fas
 
 
 ### Species IDs, BIN, barcode gap
