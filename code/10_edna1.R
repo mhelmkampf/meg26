@@ -103,6 +103,7 @@ view(asv_table)
 
 ### Read in key linking ASV IDs to sequences
 asv_key <- read_tsv("data/edna/asv_key.tsv")
+view(asv_key)
 
 
 
@@ -111,6 +112,7 @@ asv_key <- read_tsv("data/edna/asv_key.tsv")
 
 ### Pick an ASV of your choice from asv_table and BLAST its sequence found in asv_key
 # https://blast.ncbi.nlm.nih.gov/Blast.cgi
+# Use Nucleotide BLAST (blastn) and the core_nt database
 
 
 ### According to FishBase, is this result ecologically and geographically plausible?
@@ -124,11 +126,18 @@ blast_table <- read_tsv("data/edna/taxonomy_table.tsv")
 view(blast_table)
 
 
+### Are there unexpected taxa in the BLAST results (e.g., non-fish)?
+
+
 
 ### ============================================================================
 ### Exercise 3: Construct phyloseq object and filter
 
-install.packages("phyloseq")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("phyloseq")
+
 library(phyloseq)
 
 
@@ -164,10 +173,16 @@ ps <- phyloseq(
 
 
 ### Count total number of ASVs per sample (post-processing sequencing depth)
-sample_reads <- tibble(
-  Sample = sample_names(ps),
-  total_reads = sample_sums(ps)
-) %>%
+# sample_reads <- tibble(
+#   Sample = sample_names(ps),
+#   total_reads = sample_sums(ps)
+# ) %>%
+#   arrange(total_reads)
+
+sample_reads <- asv_table %>%
+  mutate(total_reads = rowSums(across(-sample)),
+         Sample = as.character(sample)) %>%
+  select(Sample, total_reads) %>%
   arrange(total_reads)
 
 
@@ -211,10 +226,15 @@ saveRDS(ps_filt, "work/ps_filt.rds")
 ### Exercise 4: Plot ASV abundance distribution
 
 ### Calculate total abundance per ASV, summed across all samples
-asv_totals <- tibble(
-  ASV = taxa_names(ps_filt),
-  total_abundance = taxa_sums(ps_filt)
-)
+# asv_totals <- tibble(
+#   ASV = taxa_names(ps_filt),
+#   total_abundance = taxa_sums(ps_filt)
+# )
+
+asv_totals <- asv_table %>%
+  select(-sample) %>%
+  summarise(across(everything(), sum)) %>%
+  pivot_longer(everything(), names_to = "ASV", values_to = "total_abundance")
 
 
 ### Plot distribution
