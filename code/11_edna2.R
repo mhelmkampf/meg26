@@ -51,10 +51,7 @@ setwd("~/meg26")
 
 ### Load packages
 library(tidyverse)
-
-
-### Install phyloseq package
-
+library(phyloseq)
 
 
 ### ============================================================================
@@ -122,19 +119,15 @@ alpha_df <- alpha_div %>%
   bind_cols(data.frame(sample_data(ps_species)))
 
 
-### Optional: Define colors for plotting
-habitat_colours <- c(
-  Seagrass = "mediumseagreen",
-  Sand     = "#c9a84c",
-  Channel  = "coral"
-)
-
-
 ### Plot alpha diversity (observed species richness) by habitat
 # Note: use geom_boxplot() and optionally geom_jitter() to show individual points
 #>
 
 
+
+### Save work / results
+saveRDS(ps_species, "work/ps_species.rds")
+write_tsv(alpha_df, "results/edna_alpha.tsv")
 ggsave("results/edna_alpha.png", width = 5, height = 5, dpi = 300)
 
 
@@ -181,6 +174,13 @@ pct2 <- round(eig[2] * 100, 1)
 #>
 
 
+### Use color in aes() to color points by Habitat, Site, and Season
+
+
+
+### Save work / results
+write_tsv(beta_df, "results/edna_beta.tsv")
+saveRDS(bray_dist, "results/edna_bc-matrix.rds")
 ggsave("results/edna_beta.png", width = 5, height = 4, dpi = 300)
 
 
@@ -194,11 +194,14 @@ group_meta <- data.frame(sample_data(ps_beta))
 adonis2(bray_dist ~ Season, 
         data = group_meta, permutations = 10000, by = "margin")
 
+
 ### Test the other variables as well
 #>
 
 
 ### Test for homogeneity of dispersion (variance) among groups
+# Note: if significant, may indicate PERMANOVA result is due to differences in variance 
+# rather than community composition
 betadisper(bray_dist, group_meta$Season) |> permutest()
 betadisper(bray_dist, group_meta$Habitat) |> permutest()
 betadisper(bray_dist, group_meta$Site) |> permutest()
@@ -248,6 +251,7 @@ ggplot(family_df, aes(x = Sample, y = Abundance, fill = family)) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 
 
+### Save plot
 ggsave("results/edna_comp.png", width = 10, height = 6, dpi = 300)
 
 
@@ -257,6 +261,14 @@ ggsave("results/edna_comp.png", width = 10, height = 6, dpi = 300)
 
 ### How many samples and ASVs (taxa) are in the dataset?
 ps
+
+
+### Optional: Define colors for plotting
+habitat_colours <- c(
+  Seagrass = "mediumseagreen",
+  Sand     = "#c9a84c",
+  Channel  = "coral"
+)
 
 
 ### Plot alpha diversity (observed species richness) by habitat
@@ -272,10 +284,10 @@ ggplot(alpha_df, aes(x = Habitat, y = Observed, fill = Habitat)) +
 394 - 247
 
 
-### Plot beta diversity PCoA
+### Plot beta diversity PCoA (replace "Habitat" with "Site" or "Season" to color by those variables)
 ggplot(beta_df, aes(x = Axis.1, y = Axis.2, color = Habitat)) +
   geom_point(size = 3) +
-  scale_color_manual(values = habitat_colours) +
+  # scale_color_manual(values = habitat_colours) +
   labs(x = paste0("PCoA1 (", pct1, "%)"),
        y = paste0("PCoA2 (", pct2, "%)")) +
   theme_bw()
