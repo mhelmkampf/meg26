@@ -7,7 +7,7 @@
 ### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< bash >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 ### Establish SSH connection to cluster using your course account (please adjust user name)
-ssh user1234@rosa.hpc.uni-oldenburg.de
+ssh -X user1234@rosa.hpc.uni-oldenburg.de
 
 
 ### Update git repository
@@ -25,21 +25,14 @@ git pull
 srun --pty --partition all_cpu.p --ntasks=1 --time=02:00:00 --mem=8G bash
 
 
-### Load RStudio module
-module load RStudio-Server
+### Load R modules
+module load R
+module load R-bundle-Bioconductor/3.18-foss-2023a-R-4.3.1
 
 
-### Execute script to start RStudio
-rstudio-start-on-rosa.sh
-
-
-### Copy the SSH command provided at step 1) and execute in new terminal tab or window
-#> ssh -N -L 8000: ...
-#> re-enter your password, and note nothing will change in the terminal on success
-
-
-### Go to http://localhost:8000 in your browser
-#> RStudio will launch automatically
+### Launch R 
+# Note: this is instead of RStudio-Server where phyloseq is not working
+R
 
 
 
@@ -70,11 +63,14 @@ ps <- readRDS("data/edna/ps.rds")
 sample_data(ps)
 
 
-### Filter, for now without removing rare ASVs (important for alpha diversity)
+### Filter, but retain rare ASVs (important for alpha diversity)
 ps_filt <- ps %>%
   subset_samples(Habitat != "Negative") %>%
   prune_samples(sample_sums(.) >= 1000, .) %>%
   subset_taxa(class == "Actinopteri")
+
+
+### How many samples and ASVs (taxa) were filtered out?
 
 
 ### Create grouping variable from every metadata column except Replicate
@@ -121,14 +117,13 @@ alpha_df <- alpha_div %>%
 
 ### Plot alpha diversity (observed species richness) by habitat
 # Note: use geom_boxplot() and optionally geom_jitter() to show individual points
-#>
+#> 
 
 
 
-### Save work / results
-saveRDS(ps_species, "work/ps_species.rds")
-write_tsv(alpha_df, "results/edna_alpha.tsv")
-ggsave("results/edna_alpha.png", width = 5, height = 5, dpi = 300)
+### Save results
+# write_tsv(alpha_df, "work/edna_alpha.tsv")
+# ggsave("work/edna_alpha.png", width = 5, height = 5, dpi = 300)
 
 
 
@@ -171,17 +166,16 @@ pct2 <- round(eig[2] * 100, 1)
 
 ### Plot beta diversity PCoA
 # Note: use geom_point()
-#>
+#> 
 
 
 ### Use color in aes() to color points by Habitat, Site, and Season
 
 
 
-### Save work / results
-write_tsv(beta_df, "results/edna_beta.tsv")
-saveRDS(bray_dist, "results/edna_bc-matrix.rds")
-ggsave("results/edna_beta.png", width = 5, height = 4, dpi = 300)
+### Save results
+# write_tsv(beta_df, "work/edna_beta.tsv")
+# ggsave("work/edna_beta.png", width = 5, height = 4, dpi = 300)
 
 
 ### PERMANOVA: tests for significant variance in community composition
@@ -207,7 +201,9 @@ betadisper(bray_dist, group_meta$Habitat) |> permutest()
 betadisper(bray_dist, group_meta$Site) |> permutest()
 
 
-###
+### Which variable explains the most variance in community composition? 
+# (i.e. which has the lowest p-value in PERMANOVA 
+# and is not significant in the dispersion test?)
 
 
 
@@ -252,7 +248,7 @@ ggplot(family_df, aes(x = Sample, y = Abundance, fill = family)) +
 
 
 ### Save plot
-ggsave("results/edna_comp.png", width = 10, height = 6, dpi = 300)
+# ggsave("work/edna_comp.png", width = 10, height = 6, dpi = 300)
 
 
 
@@ -261,6 +257,10 @@ ggsave("results/edna_comp.png", width = 10, height = 6, dpi = 300)
 
 ### How many samples and ASVs (taxa) are in the dataset?
 ps
+
+
+### How many samples and ASVs (taxa) were filtered out?
+ps_filt
 
 
 ### Optional: Define colors for plotting
@@ -301,4 +301,13 @@ adonis2(bray_dist ~ Site,
         data = group_meta, permutations = 10000, by = "margin")
 
 
+
+### ============================================================================
+### Additional code
+
+### Convert metadata table to regular tibble
 # as_tibble(data.frame(sample_data(ps_filt)), rownames = "SampleID")
+
+
+### Download file from cluster to local computer (run in local bash terminal)
+# scp user1234@rosa.hpc.uni-oldenburg.de:/user/user1234/meg26/work/edna_alpha.png .
